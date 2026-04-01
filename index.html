@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Météo</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Leaflet Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- App styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Background layers -->
+  <div class="sky-bg"></div>
+  <div class="stars"></div>
+  <div class="aurora"></div>
+
+  <div class="container">
+
+    <!-- Header & Search -->
+    <header>
+      <div class="logo"><span>🌤</span> Météo</div>
+      <div class="search-bar">
+        <input type="text" id="cityInput" placeholder="Paris, Tokyo, New York…" autocomplete="off"/>
+        <button class="btn-search" id="searchBtn">Chercher</button>
+      </div>
+      <button class="btn-theme" id="themeToggle" type="button" aria-label="Changer le thème">☀️ Clair</button>
+    </header>
+
+    <!-- Error toast -->
+    <div class="error-toast" id="errorToast"></div>
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+      <div class="loader-dots"><span></span><span></span><span></span></div>
+      <p class="loader-text">Récupération des données météo…</p>
+    </div>
+
+    <!-- Initial placeholder -->
+    <div class="placeholder" id="placeholder">
+      <span class="placeholder-emoji">🌍</span>
+      <h2>Entrez une ville pour commencer</h2>
+    </div>
+
+    <!-- Main weather content (hidden until search) -->
+    <div class="weather-content" id="weatherContent">
+
+      <!-- Hero: Current weather + Wind -->
+      <div class="hero">
+
+        <!-- Current weather card -->
+        <div class="glass-card current-card">
+          <div class="city-name" id="cityName">—</div>
+          <div class="country-date" id="countryDate">—</div>
+          <span class="weather-emoji-main" id="mainEmoji">—</span>
+          <div class="temp-main"><span id="tempVal">—</span><span class="temp-unit">°C</span></div>
+          <div class="weather-desc-main" id="mainDesc">—</div>
+          <div class="feels-like" id="feelsLike">—</div>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <span class="stat-label">💧 Humidité</span>
+              <span class="stat-value" id="humidity">—</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">👁 Visibilité</span>
+              <span class="stat-value" id="visibility">—</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">🌡 Pression</span>
+              <span class="stat-value" id="pressure">—</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">☁️ Couverture</span>
+              <span class="stat-value" id="clouds">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wind card -->
+        <div class="glass-card wind-card">
+          <div class="wind-title">🌬 Vent</div>
+          <div class="wind-speed-display">
+            <span class="wind-speed-num" id="windSpeed">0</span>
+            <span class="wind-speed-unit">km/h</span>
+          </div>
+          <div class="compass-wrap">
+            <div class="compass" id="compass">
+              <div class="compass-labels">
+                <span class="cn">N</span>
+                <span class="cs">S</span>
+                <span class="ce">E</span>
+                <span class="cw">O</span>
+              </div>
+              <div class="compass-needle" id="compassNeedle"></div>
+              <div class="compass-dot"></div>
+            </div>
+            <div class="wind-meta">
+              <div class="wind-dir-name" id="windDirName">—</div>
+              <div class="wind-gust">Rafales: <span id="windGust">—</span></div>
+            </div>
+          </div>
+          <div class="wind-scale-wrap">
+            <div class="wind-scale-label"><span>Calme</span><span>Tempête</span></div>
+            <div class="wind-bar-bg"><div class="wind-bar-fill" id="windBar"></div></div>
+            <div class="beaufort-label" id="beaufortLabel">—</div>
+          </div>
+        </div>
+
+      </div><!-- /hero -->
+
+      <!-- Map -->
+      <div class="map-section">
+        <div class="section-title">Localisation</div>
+        <div id="map"></div>
+      </div>
+
+      <!-- 5-day forecast -->
+      <div class="forecast-section">
+        <div class="section-title">Prévisions 5 jours</div>
+        <div class="days-grid" id="daysGrid"></div>
+      </div>
+
+      <!-- Hourly (shown on day click) -->
+      <div class="hourly-section" id="hourlySection" style="display:none">
+        <div class="section-title" id="hourlyTitle">Météo par heure</div>
+        <div class="hourly-scroll">
+          <div class="hourly-inner" id="hourlyInner"></div>
+        </div>
+      </div>
+
+    </div><!-- /weatherContent -->
+
+  </div><!-- /container -->
+
+  <!-- Local config (ignored by git) -->
+  <script src="config.js"></script>
+
+  <!-- App script -->
+  <script src="script.js"></script>
+</body>
+</html>

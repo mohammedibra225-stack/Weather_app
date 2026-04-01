@@ -1,0 +1,3 @@
+window.APP_CONFIG = {
+  OPENWEATHER_API_KEY: ""
+};
